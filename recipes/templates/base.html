@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {%load static %}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <title>{%block title%}Recipes{%endblock title%}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="{% static 'css/home.css/' %}" />
+</head>
+
+<body class="">
+  <nav class="nav">
+    <div class="flex justify-between px-16 py-5">
+      <a href="{%url 'recipe:home_page' %}" class="text-3xl text-emerald-600 font-bold">Foodie<span
+          class="text-pink-600">Fun</span></a>
+      <div>
+        <a href="{%url 'recipe:home_page'%}" class="hover:text-cyan-700 font-bold mx-3 text-lg">Home</a>
+        <a href="{% url 'recipe:recipe_list' %}" class="hover:text-cyan-700 font-bold mx-3 text-lg">Recipes</a>
+        <a href="{%url 'recipe:collection_list'%}" class="hover:text-cyan-700 font-bold mx-3 text-lg">Collection</a>
+      </div>
+    </div>
+  </nav>
+  {%block content%} {%endblock content%} {%include 'footer.html'%}
+  <script src="https://unpkg.com/htmx.org@1.5.0"></script>
+
+</body>
+
+</html>

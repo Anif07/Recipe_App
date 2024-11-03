@@ -1,0 +1,32 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container mx-auto py-6 px-16">
+
+  <div class="mb-6">
+    <h2 class="text-3xl font-bold text-orange-600 mb-3">Featured Recipes</h2>
+    {% if featured_recipes_page %}
+    <div class="flex flex-wrap -mx-4">
+      {% for recipe in featured_recipes_page %}
+      {%include 'includes/_recipe_card.html' with featured=True%}
+      {% endfor %}
+    </div>
+    {%include 'includes/_pagination.html' with page_obj=featured_recipes_page page_type='featured_page' %}
+    {% else %}
+    <p class="text-gray-600">No featured recipes available.</p>
+    {% endif %}
+  </div>
+
+  <div class="mt-5">
+    <h2 class="text-3xl font-bold text-orange-600 mb-3">All Recipes</h2>
+    {% if recipes %}
+    <div class="flex flex-wrap -mx-4">
+      {% for recipe in recipes %}
+      {%include 'includes/_recipe_card.html'%}
+      {% endfor %}
+    </div>
+    {% include 'includes/_pagination.html' with page_obj=page_obj page_type='page' %}
+    {% else %}
+    <p class="text-gray-600">There are no recipes available.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock content %}

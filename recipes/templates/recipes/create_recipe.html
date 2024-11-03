@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto bg-white p-8 rounded shadow">
+    <h1 class="text-2xl font-bold mb-4">Create a Recipe</h1>
+
+    <form method="post" enctype="multipart/form-data" x-data="recipeForm()">
+        {% csrf_token %}
+
+        <!-- Main Recipe Form -->
+        <div class="mb-4">
+            {{ form.as_p }}
+        </div>
+
+        <!-- Ingredients Section -->
+        <div class="mt-6">
+            <h2 class="text-xl font-semibold mb-2">Ingredients</h2>
+            <template x-for="(ingredient, index) in ingredients" :key="index">
+                <div class="flex space-x-2 mb-2">
+                    <input type="text" :name="'ingredients-' + index + '-name'" x-model="ingredient.name"
+                        placeholder="Ingredient Name" class="form-input flex-1 border px-2 py-1 rounded">
+                    <input type="text" :name="'ingredients-' + index + '-quantity'" x-model="ingredient.quantity"
+                        placeholder="Quantity" class="form-input flex-1 border px-2 py-1 rounded">
+                    <input type="text" :name="'ingredients-' + index + '-unit'" x-model="ingredient.unit"
+                        placeholder="Unit" class="form-input flex-1 border px-2 py-1 rounded">
+                    <button type="button" @click="removeIngredient(index)"
+                        class="bg-red-500 text-white px-2 py-1 rounded">
+                        Remove
+                    </button>
+                </div>
+            </template>
+            <button type="button" @click="addIngredient()" class="bg-blue-500 text-white px-4 py-2 rounded mt-2">
+                Add Ingredient
+            </button>
+        </div>
+
+        <!-- Images Section -->
+        <div class="mt-6">
+            <h2 class="text-xl font-semibold mb-2">Images</h2>
+            <template x-for="(image, index) in images" :key="index">
+                <div class="flex space-x-2 mb-2">
+                    <input type="file" :name="'images-' + index + '-image'" @change="setImage($event, index)"
+                        class="form-input flex-1 border px-2 py-1 rounded">
+                    <button type="button" @click="removeImage(index)" class="bg-red-500 text-white px-2 py-1 rounded">
+                        Remove
+                    </button>
+                </div>
+            </template>
+            <button type="button" @click="addImage()" class="bg-blue-500 text-white px-4 py-2 rounded mt-2">
+                Add Image
+            </button>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="mt-6">
+            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">
+                Save Recipe
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function recipeForm() {
+        return {
+            ingredients: [{ name: '', quantity: '', unit: '' }],
+            images: [{ file: null }],
+
+            addIngredient() {
+                this.ingredients.push({ name: '', quantity: '', unit: '' });
+            },
+
+            removeIngredient(index) {
+                if (this.ingredients.length > 1) {
+                    this.ingredients.splice(index, 1);
+                }
+            },
+
+            addImage() {
+                this.images.push({ file: null });
+            },
+
+            removeImage(index) {
+                if (this.images.length > 1) {
+                    this.images.splice(index, 1);
+                }
+            },
+
+            setImage(event, index) {
+                this.images[index].file = event.target.files[0];
+            }
+        };
+    }
+</script>
+{% endblock %}

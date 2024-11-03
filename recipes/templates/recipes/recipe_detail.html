@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8 bg-slate-100 mt-1">
+    <div class="mb-6 flex justify-center relative w-8/12 h-72 mx-auto">
+        <div id="carousel" class="w-full h-full relative overflow-hidden rounded-lg shadow-md">
+            {% for image in recipe.images.all %}
+                <div class="carousel-slide w-full h-full absolute inset-0 transition-opacity duration-500 opacity-0">
+                    <img src="{{ image.image.url }}" alt="{{ recipe.title }}" class="w-full h-full object-cover">
+                </div>
+            {% empty %}
+                <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
+                    No image available
+                </div>
+            {% endfor %}
+        </div>
+
+        <button onclick="prevSlide()" class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-600 text-white rounded-full px-2 py-1">&lt;</button>
+        <button onclick="nextSlide()" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-600 text-white rounded-full px-2 py-1">&gt;</button>
+    </div>
+
+    <div class="mb-6 text-center">
+        <h1 class="text-6xl font-bold text-gray-800">{{ recipe.title }} {%if recipe.featured%}<span class="text-base text-amber-500">Featured</span>{%endif%}</h1>
+        <p class="text-lg text-gray-600 mt-1">By <span class="font-semibold">{{ recipe.author.username }}</span></p>
+    </div>
+
+    <div class="mb-8 flex flex-wrap gap-4 text-gray-700 justify-center">
+        <p class="bg-gray-100 rounded-lg px-3 py-1">Cuisine: <span class="font-semibold">{{ recipe.cuisine }}</span></p>
+        <p class="bg-gray-100 rounded-lg px-3 py-1">Difficulty Level: <span class="font-semibold">{{ recipe.difficulty_level }}</span></p>
+        <p class="bg-gray-100 rounded-lg px-3 py-1">Servings: <span class="font-semibold">{{ recipe.servings }}</span></p>
+        <p class="bg-gray-100 rounded-lg px-3 py-1">Calories: <span class="font-semibold">{{ recipe.calories }} cal</span></p>
+        <p class="bg-gray-100 rounded-lg px-3 py-1">Preparation Time: <span class="font-semibold">{{ recipe.preparation_time }} min</span></p>
+        <p class="bg-gray-100 rounded-lg px-3 py-1">Total Time: <span class="font-semibold">{{ recipe.total_time }} min</span></p>
+    </div>
+
+    <div class="flex space-x-4 mt-8 mb-3 w-3/5 mx-auto">
+        <button id="ingredientsButton" onclick="showIngredients()" 
+            class="text-white bg-emerald-600 hover:bg-emerald-500 font-semibold px-5 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-400 rounded-full">
+            Ingredients
+        </button>
+        <button id="stepsButton" onclick="showSteps()" 
+            class="text-white bg-emerald-600 hover:bg-emerald-500 font-semibold px-5 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-400 rounded-full">
+            Steps
+        </button>
+    </div>
+    
+
+    <div class="flex justify-center bg-white w-3/5 mx-auto px-4 py-2 rounded-md drop-shadow-md">
+        <div id="ingredientsSection" class="text-gray-700 hidden flex-grow text-left">
+            <ul class="list-disc pl-6 space-y-2">
+                {% for ingredient in recipe.ingredients.all %}
+                    <li>{{ ingredient.name }} - {{ ingredient.quantity }}</li>
+                {%empty%}
+                <p>No Ingredients Provided</p>
+                {% endfor %}
+            </ul>
+        </div>
+    
+        <div id="stepsSection" class="text-gray-700 hidden flex-grow text-left">
+            <ol class="list-decimal pl-6 space-y-2">
+                <p>{{recipe.instructions}}</p>
+            </ol>
+        </div>
+    </div>
+    
+</div>
+
+<script>
+    function showIngredients() {
+        document.getElementById('ingredientsSection').classList.remove('hidden');
+        document.getElementById('stepsSection').classList.add('hidden');
+        
+        document.getElementById('ingredientsButton').classList.add('bg-emerald-700', 'text-white');
+        document.getElementById('ingredientsButton').classList.remove('bg-gray-200', 'text-gray-700');
+        document.getElementById('stepsButton').classList.add('bg-gray-200', 'text-gray-700');
+        document.getElementById('stepsButton').classList.remove('bg-emerald-700', 'text-white');
+    }
+
+    function showSteps() {
+        document.getElementById('ingredientsSection').classList.add('hidden');
+        document.getElementById('stepsSection').classList.remove('hidden');
+        
+        document.getElementById('stepsButton').classList.add('bg-emerald-700', 'text-white');
+        document.getElementById('stepsButton').classList.remove('bg-gray-200', 'text-gray-700');
+        document.getElementById('ingredientsButton').classList.add('bg-gray-200', 'text-gray-700');
+        document.getElementById('ingredientsButton').classList.remove('bg-emerald-700', 'text-white');
+    }
+
+    document.addEventListener('DOMContentLoaded', showIngredients);
+
+    let currentIndex = 0;
+    const slides = document.querySelectorAll(".carousel-slide");
+
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.style.opacity = i === index ? "1" : "0";
+        });
+    }
+
+    function nextSlide() {
+        currentIndex = currentIndex === slides.length - 1 ? 0 : currentIndex + 1;
+        showSlide(currentIndex);
+    }
+
+    function prevSlide() {
+        currentIndex = currentIndex === 0 ? slides.length - 1 : currentIndex - 1;
+        showSlide(currentIndex);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => showSlide(currentIndex));
+</script>
+
+
+{% endblock content %}

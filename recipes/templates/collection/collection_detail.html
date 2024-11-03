@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mx-auto py-8 px-48 ">
+    <div class="bg-white rounded-lg shadow-md p-6 ">
+        <h1 class="text-5xl font-bold mb-4 text-green-600">{{ collection.title }}</h1>
+        <p class="text-gray-600 mb-4">Author: <span class="font-semibold">{{ collection.author.username }}</span></p>
+        <div>
+            {%if collection.author == request.user%}
+            <a href="{% url 'recipe:collection_edit' collection.id %}"
+                class="bg-blue-700 text-white font-semibold px-3 py-1">Edit</a>
+            <a href="{% url 'recipe:collection_delete' collection.id %}"
+                class="text-red-500 ml-4 px-3 py-1 bg-gray-300 font-semibold">Delete</a>
+            {%endif%}
+        </div>
+        <h2 class="text-2xl font-semibold mt-6 mb-2">Recipes</h2>
+        {% if collection.recipes.count > 0 %}
+        <div class="flex flex-wrap flex-row gap-10">
+            {% for recipe in collection.recipes.all %}
+            <a class="p-3 bg-gray-200" href="{%url 'recipe:recipe_detail' recipe.id%}">
+                {% with recipe.images.first as image %}
+                <img src="{{image.image.url}}" alt="image" class="w-44 h-44 object-cover">
+                {%endwith%}
+                <h1 class="text-2xl font-bold">{{recipe.title}} <span class="text-sm text-neutral-400">By
+                        {{recipe.author.username}}</span></h1>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-gray-500">No recipes in this collection.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

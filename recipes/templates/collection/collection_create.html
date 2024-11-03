@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mx-auto py-8">
+    <h1 class="text-3xl font-bold mb-6">Create New Collection</h1>
+    <form method="post" class="bg-white rounded-lg shadow-md p-6">
+        {% csrf_token %}
+        <div class="mb-4">
+            <label for="id_title" class="block text-gray-700 text-sm font-bold mb-2">Title:</label>
+            <input type="text" name="title" id="id_title"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                required>
+        </div>
+        <div class="mb-4">
+            <p class="block text-gray-700 text-sm font-bold mb-2">Select Recipes:</p>
+            {% for recipe in form.recipes.field.queryset %}
+            <div class="flex items-center mb-2">
+                <input type="checkbox" name="recipes" id="recipe_{{ recipe.id }}" value="{{ recipe.id }}" class="mr-2">
+                <label for="recipe_{{ recipe.id }}" class="text-gray-700">{{ recipe.title }}</label>
+            </div>
+            {% endfor %}
+        </div>
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Create Collection
+        </button>
+        <a href="{% url 'recipe:collection_list' %}" class="inline-block mt-4 text-gray-500">Cancel</a>
+    </form>
+</div>
+{% endblock content %}

@@ -1,0 +1,33 @@
+<div class="flex justify-center mt-4">
+    <div class="inline-flex items-center space-x-1">
+      {% if page_obj.has_previous %}
+        <a href="?{{ page_type }}={{ page_obj.previous_page_number }}" 
+           class="px-3 py-2 bg-gray-200 text-gray-700 rounded-l hover:bg-gray-300">
+          Previous
+        </a>
+      {% else %}
+        <span class="px-3 py-2 bg-gray-300 text-gray-500 rounded-l cursor-not-allowed">Previous</span>
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <span class="px-3 py-2 bg-orange-500 text-white font-semibold">{{ num }}</span>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <a href="?{{ page_type }}={{ num }}" 
+             class="px-3 py-2 bg-gray-200 text-gray-700 hover:bg-gray-300">
+            {{ num }}
+          </a>
+        {% endif %}
+      {% endfor %}
+  
+      {% if page_obj.has_next %}
+        <a href="?{{ page_type }}={{ page_obj.next_page_number }}" 
+           class="px-3 py-2 bg-gray-200 text-gray-700 rounded-r hover:bg-gray-300">
+          Next
+        </a>
+      {% else %}
+        <span class="px-3 py-2 bg-gray-300 text-gray-500 rounded-r cursor-not-allowed">Next</span>
+      {% endif %}
+    </div>
+  </div>
+  

@@ -1,0 +1,54 @@
+<div class="w-full sm:w-1/2 md:w-1/3 px-4 mb-6">
+    <div
+      class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col pb-2"
+    >
+      {% with recipe.images.first as image %}
+      <div class="flex-shrink-0">
+        {% if image %}
+        <img
+          src="{{ image.image.url }}"
+          alt="{{ recipe.title }}"
+          class="w-full h-56 object-cover"
+        />
+        {% else %}
+        <img
+          src=""
+          alt="No image available"
+          class="w-full h-64 object-cover"
+        />
+        {% endif %}
+      </div>
+      {% endwith %}
+      <div class="p-3 flex-1 flex flex-col justify-between text-center">
+        <h2 class="text-xl font-semibold text-orange-600">
+            {%if featured%}
+            <i class="fa-solid fa-star" style="color: #edc32c;"></i>
+            {%endif%}
+          {{ recipe.title }}
+          <span class="text-neutral-400 text-sm"
+            >By {{ recipe.author.username }}</span
+          >
+        </h2>
+        <p class="mt-1 text-gray-600">
+          <span class="font-bold text-black text-lg"
+            >{{ recipe.cuisine }}</span
+          >
+          <span class="text-slate-500">Dish</span>
+        </p>
+        <p class="mt-1 text-gray-700 text-slate-500">
+            Belongs to
+            <span class="font-bold text-black text-lg"
+              >{{ recipe.food_type }}</span
+            >
+            category
+          </p>
+        <div class="mt-4">
+          <a
+            href="{% url 'recipe:recipe_detail' recipe.id %}"
+            class="text-white bg-red-600 font-semibold px-3 py-2 hover:bg-orange-500 rounded-md w-9/12"
+            >View Recipe</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>

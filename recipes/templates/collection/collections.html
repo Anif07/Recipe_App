@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mx-auto py-8 px-32">
+    <h1 class="text-4xl font-bold mb-6">Collections</h1>
+    <div class="flex justify-end">
+        <a href="{% url 'recipe:collection_create' %}"
+            class="btn bg-emerald-900 text-white rounded-full px-6 py-3 text-xl font-bold">Create
+            Collection</a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for collection in collections %}
+        <div class="bg-white rounded-lg shadow-md p-4">
+            <h2 class="text-2xl font-bold  text-blue-800">{{ collection.title }}</h2>
+            <p class="text-gray-600">Author: {{ collection.author.username }}</p>
+            <p class="text-gray-500 mt-2 mb-3">Recipes: {{ collection.recipes.count }}</p>
+            <a href="{%url 'recipe:collection_detail' collection.id %}"
+                class="btn bg-orange-500 text-white font-bold text-sm rounded-full px-5 py-2 mt-4">View
+                collection</a>
+        </div>
+        {% empty %}
+        <p class="text-gray-500">No collections available.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}
